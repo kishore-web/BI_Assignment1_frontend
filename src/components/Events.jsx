@@ -12,7 +12,7 @@ const Events = ({ searchQuery }) => {
   console.log(eventArr);
 
   const selectedEventTypeArr =
-    selectEventType === "both"
+    selectEventType === "both" || selectEventType === ""
       ? eventArr
       : eventArr.filter((item) =>
           selectEventType === "online"
@@ -20,7 +20,7 @@ const Events = ({ searchQuery }) => {
             : item.eventType === false
         );
   const searchByTitleTags = selectedEventTypeArr.filter((item) => {
-    let searchText = searchQuery.toLowerCase();
+    let searchText = searchQuery?.toLowerCase() || "";
     let eventTitleArr = item.eventTitle.toLowerCase().includes(searchText);
     let tagsArr = item.additionalInfo?.eventTags || [];
     let eventTags = tagsArr.some((tag) =>
@@ -43,7 +43,7 @@ const Events = ({ searchQuery }) => {
             className="form-select"
             onChange={(e) => setSelectEventType(e.target.value)}
           >
-            <option value="both">Select Event Type</option>
+            <option value="">Select Event Type</option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
             <option value="both">Both</option>
@@ -52,34 +52,36 @@ const Events = ({ searchQuery }) => {
       </section>
       {loading && <p>Loading...</p>}
       {error && <p>An error occured while fetching data</p>}
-      <section className="row p-4 g-5">
-        {searchByTitleTags.length > 0 ? (
-          searchByTitleTags.map((item) => (
-            <Link
-              to={`/events/${item._id}`}
-              className="col-md-4 text-decoration-none"
-              key={item._id}
-            >
-              <div className="card border-0 position-relative bg-body-tertiary">
-                <img
-                  src={item.imageUrl}
-                  className="card-img-top"
-                  alt={item.eventTitle}
-                />
-                <div className="card-body p-0">
-                  <p className="m-0">{item.eventTime}</p>
-                  <h4 className="card-text fw-bolder">{item.eventTitle}</h4>
+      {!loading && !error && (
+        <section className="row p-4 g-5">
+          {searchByTitleTags.length > 0 ? (
+            searchByTitleTags.map((item) => (
+              <Link
+                to={`/events/${item._id}`}
+                className="col-md-4 text-decoration-none"
+                key={item._id}
+              >
+                <div className="card border-0 position-relative bg-body-tertiary">
+                  <img
+                    src={item.imageUrl}
+                    className="card-img-top"
+                    alt={item.eventTitle}
+                  />
+                  <div className="card-body p-0">
+                    <p className="m-0">{item.eventTime}</p>
+                    <h4 className="card-text fw-bolder">{item.eventTitle}</h4>
+                  </div>
+                  <button className="btn btn-light position-absolute top-0 start-0 mt-2 ms-2">
+                    {item.eventType ? "Online" : "Offline"} Event
+                  </button>
                 </div>
-                <button className="btn btn-light position-absolute top-0 start-0 mt-2 ms-2">
-                  {item.eventType ? "Online" : "Offline"} Event
-                </button>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <p>No events match your search</p>
-        )}
-      </section>
+              </Link>
+            ))
+          ) : (
+            <p>No events match your search</p>
+          )}
+        </section>
+      )}
     </div>
   );
 };
