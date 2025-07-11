@@ -29,6 +29,18 @@ const Events = ({ searchQuery }) => {
 
     return eventTitleArr || eventTags;
   });
+  const convertTimeIST = (eventTime) => {
+    return new Date(eventTime).toLocaleString("en-IN", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata",
+    });
+  };
 
   return (
     <div className="container my-4">
@@ -68,7 +80,7 @@ const Events = ({ searchQuery }) => {
                     alt={item.eventTitle}
                   />
                   <div className="card-body p-0">
-                    <p className="m-0">{item.eventTime}</p>
+                    <p className="m-0">{convertTimeIST(item.eventTime)}</p>
                     <h4 className="card-text fw-bolder">{item.eventTitle}</h4>
                   </div>
                   <button className="btn btn-light position-absolute top-0 start-0 mt-2 ms-2">
