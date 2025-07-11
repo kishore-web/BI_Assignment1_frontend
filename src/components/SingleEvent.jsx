@@ -1,7 +1,7 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import useFetch from "../useFetch";
-import Header from "./Header";
+
 import { FaLocationDot, FaRegClock } from "react-icons/fa6";
 import { BiRupee } from "react-icons/bi";
 const SingleEvent = () => {
@@ -24,7 +24,15 @@ const SingleEvent = () => {
   };
   return (
     <>
-      <Header />
+      <header className="border-bottom py-2">
+        <nav className="navbar">
+          <div className="container">
+            <Link to="/" className="navbar-brand text-danger fw-bolder fs-3">
+              MeetUp
+            </Link>
+          </div>
+        </nav>
+      </header>
       <main className="bg-body-tertiary py-3 ">
         <div className="container">
           {loading && <p>Loading...</p>}
